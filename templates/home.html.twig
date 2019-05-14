@@ -1,0 +1,35 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Home{% endblock %}
+
+{% block stylesheets %}
+<style>
+    .nav{
+        border-bottom: 1px solid blue;
+    }
+</style>
+
+{% endblock %}
+
+{% block body %}
+
+    <div class="container-fluid">
+        <ul class="nav nav-pills">
+            <li><a href="#">Home</a></li>
+            <li role="presentation" class="dropdown">
+                <a class="dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
+                    您好, {{ app.user.username }} <span class="caret"></span>
+                </a>
+                <ul class="dropdown-menu">
+                    <li><a href="">个人中心</a></li>
+                    <li><a href="{{ path('app_logout') }}">注销</a></li>
+                </ul>
+            </li>
+        </ul>
+    </div>
+
+{% endblock %}
+
+{% block javascripts %}
+
+{% endblock %}

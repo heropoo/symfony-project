@@ -3,11 +3,14 @@
 namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\UserRepository")
+ * @ORM\Table(name="user", options={"comment": "用户表"})
+ * @ORM\HasLifecycleCallbacks
  */
-class User
+class User implements UserInterface
 {
     /**
      * @ORM\Id()
@@ -17,12 +20,12 @@ class User
     private $id;
 
     /**
-     * @ORM\Column(type="string", length=50)
+     * @ORM\Column(type="string", length=50, options={"comment": "用户名"})
      */
     private $username;
 
     /**
-     * @ORM\Column(type="string", length=255)
+     * @ORM\Column(type="string", length=255, options={"comment": "密码"})
      */
     private $password;
 
@@ -35,6 +38,27 @@ class User
      * @ORM\Column(type="datetime")
      */
     private $updated_at;
+
+    /**
+     * @ORM\Column(type="json")
+     */
+    private $roles = [];
+
+    public function setRoles(array $roles): self
+    {
+        $this->roles = $roles;
+
+        return $this;
+    }
+
+    public function getRoles(): array
+    {
+        $roles = $this->roles;
+        // guarantee every user at least has ROLE_USER
+        $roles[] = 'ROLE_USER';
+
+        return array_unique($roles);
+    }
 
     /**
      * @ORM\Column(type="smallint")
@@ -105,4 +129,34 @@ class User
 
         return $this;
     }
+
+    /**
+     * @see UserInterface
+     */
+    public function getSalt()
+    {
+        // not needed when using the "bcrypt" algorithm in security.yaml
+    }
+
+    /**
+     * @see UserInterface
+     */
+    public function eraseCredentials()
+    {
+        // If you store any temporary, sensitive data on the user, clear it here
+        // $this->plainPassword = null;
+    }
+
+    /**
+     * @ORM\PrePersist()
+     * @ORM\PreUpdate()
+     */
+    public function autoSetTime(){
+        if($this->getCreatedAt() == null){
+            $this->setCreatedAt(new \DateTime());
+        }
+        $this->setUpdatedAt(new \DateTime());
+    }
+
+
 }

@@ -1,0 +1,57 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Login{% endblock %}
+
+{% block stylesheets %}
+<style>
+    .login-form{
+        margin: 40px auto;
+        width: 30rem;
+    }
+    .login-title{
+        margin-top: 5rem;
+    }
+</style>
+
+{% endblock %}
+
+{% block body %}
+
+    <div class="container">
+        <form action="" class="login-form" method="post">
+            <h1 class="login-title text-center mb-lg-5">Login</h1>
+            <div class="form-group">
+                <input type="text" name="username" value="" class="form-control" placeholder="username" required>
+            </div>
+            <div class="form-group">
+                <input type="password" name="password" value="" class="form-control" placeholder="password" required>
+            </div>
+
+            <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
+
+            <div class="form-group">
+                <button type="submit" class="btn btn-primary form-control">Login</button>
+            </div>
+        </form>
+    </div>
+
+{% endblock %}
+
+{% block javascripts %}
+<script>
+    $(function(){
+        $(".login-form").submit(function(){
+            var data = $(this).serialize();
+            $.post('{{ path('app_login') }}', data, function(res){
+                if(res.code == 200){
+                    alert(res.msg);
+                    window.location.href = '{{ path('home') }}';
+                }else{
+                    alert(res.msg);
+                }
+            });
+            return false
+        });
+    });
+</script>
+{% endblock %}
