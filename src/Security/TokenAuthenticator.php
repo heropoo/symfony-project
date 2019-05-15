@@ -183,6 +183,8 @@ class TokenAuthenticator extends AbstractGuardAuthenticator
             return JsonResponse::create(['code'=>400, 'msg'=>'密码错误']);
         }else if($exception instanceof CustomUserMessageAuthenticationException){
             return JsonResponse::create(['code'=>400, 'msg'=>$exception->getMessage()]);
+        }else{
+            return JsonResponse::create(['code'=>500, 'msg'=>$exception->getMessage()]);
         }
     }
 
@@ -246,6 +248,6 @@ class TokenAuthenticator extends AbstractGuardAuthenticator
      * @return Response
      */
     public function start(Request $request, AuthenticationException $authException = null){
-        return new RedirectResponse('/login');
+        return new RedirectResponse($this->urlGenerator->generate('app_login'));
     }
 }
