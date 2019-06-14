@@ -63,7 +63,7 @@ class User implements UserInterface
     /**
      * @ORM\Column(type="smallint")
      */
-    private $status;
+    private $status = 0;
 
     public function getId(): ?int
     {
