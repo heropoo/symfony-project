@@ -28,6 +28,6 @@ doctrine:
                 prefix: 'App\Entity'
                 alias: App
 
-            SonataUserBundle: ~
-            FOSUserBundle: ~
-            ApplicationSonataUserBundle: ~
+#            SonataUserBundle: ~
+#            FOSUserBundle: ~
+#            ApplicationSonataUserBundle: ~
